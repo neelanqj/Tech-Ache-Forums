@@ -1,0 +1,41 @@
+<h1>New Question</h1>
+
+<form (ngSubmit)="submit()" novalidate>
+  <div class="form-group">
+    <label for="questionTitle">Question *</label> 
+    <input id="questionTitle" type="text" class="form-control" name="questionTitle" [(ngModel)]="question.title" maxLength="150">
+    <span [ngStyle]="(question.title.length === 150 || question.title.length < 21) ? { 'color': 'red' } : { 'color': 'black' }">{{ question.title.length }}/150</span>
+    <span *ngIf="question.title.length < 20" style="color:red">Title must be greater than 20 characters</span>
+  </div>
+  <div class="form-group">
+    <label for="questionDetails">Details</label>
+    <textarea id="questionDetails" type="text" class="form-control" rows="5" name="questionDetails" [(ngModel)]="question.details" maxLength="2000"></textarea>
+    <span [ngStyle]="(question.details.length === 2000) ? { 'color': 'red' } : { 'color': 'black' }">{{ question.details.length }}/2000</span>
+  </div>
+  <button type="button" class="btn btn-info btn-lg" (click)="toggleModal()">Preview and Ask</button>
+
+  <!-- Modal -->
+  <div id="myModal" class="modal show" role="dialog" *ngIf="showModal">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Question Preview:</h3>
+        </div>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title wrap-text">{{ question.title }}</h4>
+        </div>
+        <div class="modal-body wrap-text">
+          <p>{{ question.details }}</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary">Post</button>
+          <button type="button" class="btn btn-default" (click)="toggleModal()">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</form>

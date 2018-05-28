@@ -1,0 +1,12 @@
+<h2>Questions</h2>
+<div class="well">
+    Live Feed
+</div>
+<div class="well wrap-text" *ngFor="let q of queryResult.items" [ngBusy]="busy">      
+      <a [routerLink]="['/questions/'+q.id]"><h2>{{ q.title }}</h2></a>
+      {{ q.details | slice:0:200 }} <span *ngIf="q.details.length > 200">...</span>
+      <hr/>
+      <span class='glyphicon glyphicon-user'></span> {{ q.user.firstName }} {{ q.user.lastName }} 
+      <span> ({{ q.createDate | date }}) </span>
+</div>
+<pagination [total-items]="queryResult.totalItems" [page-size]="query.pageSize" (page-changed)="onPageChange($event)"></pagination>

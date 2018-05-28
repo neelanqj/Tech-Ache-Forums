@@ -1,0 +1,69 @@
+<div class="well well-blue" *ngIf="question.closed">
+    <blockquote class="blockquote-reverse">
+        <p><span class="glyphicon glyphicon-exclamation-sign"></span>
+            Question has been closed, you cannot edit or add answers to it anymore.</p>
+    </blockquote>
+</div>
+
+<div class="well question">
+    <div class="well wrap-text">
+        <h2>{{ question.title }}</h2>
+        <img style="width:50px;height:50px" src="/img/dual.png"/> {{ question.user.firstName }} {{ question.user.lastName }}
+        <hr/>
+        {{ question.details }}
+    </div>
+    <div class="well wrap-text" *ngFor="let ext of question.questionExtensions" [ngBusy]="busy">
+        {{ ext.details }}
+    </div>
+     Posted: {{ question.createDate | date }}
+    <hr/>
+</div>
+<div class="well" *ngIf="questionCreator && buttonsVisible && !question.closed && question.questionExtensions.length < 3">
+    <form #u="ngForm" (ngSubmit)="updateQuestion()" novalidate>
+        <div class="form-group">
+            <h3>Update Question</h3>
+            <textarea class="form-control" name="comment" rows="2" id="comment" [(ngModel)]="questionExtension"></textarea>
+        </div>
+        <button class="btn btn-primary">Update!</button>
+    </form>
+</div>
+
+<div class="well" *ngIf="!questionCreator && buttonsVisible && !question.closed">
+    <div class="form-group">
+        <h3>Have An Opinion!?</h3>
+    </div>
+    <form #a="ngForm" (ngSubmit)="addAnswer()" novalidate>
+        <div class="form-group">
+            <textarea class="form-control" rows="2" id="comment" name="comment" [(ngModel)]="questionAnswer"></textarea>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-success pull-right">Send It!</button>
+        </div>
+    </form>
+</div>
+
+<div  class="well answer" *ngFor="let answer of question.answers" [ngBusy]="busy">
+    <div class="wrap-text">
+        <img style="width:50px;height:50px" src="/img/dual.png"/>  {{ answer.user.firstName }} {{ answer.user.lastName }} 
+        <hr/>
+       
+        {{ answer.details }}
+        <hr/>
+        Posted: {{ answer.user.createDate | date }}
+        <hr/>
+    </div>
+    <div class="form-group well wrap-text reply" *ngFor="let reply of answer.replies" [ngBusy]="busy">
+        <img style="width:50px;height:50px" src="/img/dual.png"/>  {{ reply.user.firstName }} {{ reply.user.lastName }} 
+        <hr/>
+        {{ reply.details }}
+    </div>
+    <div class="form-group">
+        <br/><br/>
+        <button class="btn btn-default" (click)="reply.hidden = !reply.hidden; toggleButtonVisibility()" *ngIf="buttonsVisible">Reply</button>
+    </div>
+    <div class="form-group well" [hidden]="true" #reply>
+        <textarea class="form-control" name="" id="" cols="30" rows="3" [(ngModel)]="newReply"></textarea>
+        <button class="btn btn-default" (click)="addReply(answer.id,newReply)" >Reply</button>
+        <button class="btn btn-default" (click)="reply.hidden = !reply.hidden; toggleButtonVisibility()">Cancel</button>
+    </div>
+</div>

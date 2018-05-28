@@ -1,0 +1,17 @@
+.well-blue {
+    background: rgb(22, 105, 173);
+    color: white;
+}
+
+.question {
+    background: steelblue;
+}
+
+.answer {
+    background: seagreen;
+    color: white;
+}
+.reply {
+    background: turquoise;
+    color: red;
+}
